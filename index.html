@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rubielle | Detalle Floral & Arte Artesanal Pastel</title>
+  
+  <!-- Script Anti-FOUC Dark Mode -->
+  <script>
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            rosepastel: {
+              50: '#FFF5F7',
+              100: '#FFE4E8',
+              200: '#FCD1D7',
+              300: '#F8A4B0',
+              400: '#EE7589',
+              500: '#E8B4B8',
+              600: '#D26075',
+              700: '#B03E53',
+            },
+            cream: {
+              50: '#FAF7F2',
+              100: '#F5EFE6',
+              200: '#E8DEC8',
+            },
+            mint: {
+              100: '#E8F5E9',
+              500: '#81C784',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Lucide Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+    }
+    .dark .glass-card {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-cream-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased selection:bg-rosepastel-200 selection:text-rosepastel-700 transition-colors duration-300">
+
+  <!-- BANNER NOTIFICACIÓN DISPONIBILIDAD -->
+  <div class="bg-gradient-to-r from-rosepastel-100 via-rosepastel-50 to-cream-100 dark:from-slate-900 dark:via-rosepastel-950 dark:to-slate-900 border-b border-rosepastel-200/50 dark:border-slate-800 py-2 px-4 text-center text-xs font-semibold text-rosepastel-700 dark:text-rosepastel-300 flex items-center justify-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+    🌸 Pedidos personalizados abiertos para esta semana | Confección 100% artesanal a pedido
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-40 bg-cream-50/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-rosepastel-200/40 dark:border-slate-800/80 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2 text-2xl font-black text-rosepastel-700 dark:text-rosepastel-300 tracking-tight">
+        <span class="p-1.5 bg-rosepastel-100 dark:bg-slate-800 rounded-2xl shadow-sm">🌸</span>
+        <span>Rubielle</span>
+      </a>
+
+      <!-- Menú Desktop -->
+      <nav class="hidden md:flex items-center gap-8 font-semibold text-slate-600 dark:text-slate-300 text-sm">
+        <a href="#home" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Inicio</a>
+        <a href="#catalogo" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Catálogo</a>
+        <a href="#personalizar" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Personalizar</a>
+        <a href="#tarjeta" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Tarjeta</a>
+        <a href="#testimonios" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Reseñas</a>
+        <a href="#nosotros" class="hover:text-rosepastel-600 dark:hover:text-rosepastel-300 transition-colors">Nosotros</a>
+      </nav>
+
+      <!-- Botones de Acción -->
+      <div class="flex items-center gap-2">
+        <!-- Toggle Dark Mode -->
+        <button id="theme-toggle" class="p-2.5 text-slate-600 dark:text-slate-300 hover:bg-rosepastel-100 dark:hover:bg-slate-800 rounded-full transition-colors" title="Cambiar Tema">
+          <i data-lucide="moon" class="w-5 h-5 dark:hidden"></i>
+          <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-300"></i>
+        </button>
+
+        <!-- Botón Wishlist / Favoritos -->
+        <button id="wishlist-btn" class="relative p-2.5 text-slate-600 dark:text-slate-300 hover:bg-rosepastel-100 dark:hover:bg-slate-800 rounded-full transition-colors" title="Mis Favoritos">
+          <i data-lucide="heart" class="w-5 h-5 text-rosepastel-600 dark:text-rosepastel-400"></i>
+          <span id="wishlist-badge" class="absolute -top-1 -right-1 bg-rosepastel-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+        </button>
+
+        <!-- Botón Carrito -->
+        <button id="open-cart-btn" class="relative p-2.5 bg-rosepastel-100 dark:bg-slate-800 text-rosepastel-700 dark:text-rosepastel-300 rounded-full hover:bg-rosepastel-200 dark:hover:bg-slate-700 transition-all shadow-sm">
+          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+          <span id="cart-badge" class="absolute -top-1 -right-1 bg-rosepastel-600 text-white text-[10px] font-extrabold rounded-full w-5 h-5 flex items-center justify-center shadow-md">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="relative py-20 lg:py-24 bg-gradient-to-b from-rosepastel-50/60 via-cream-50 to-cream-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12">
+      <div class="flex-1 text-center lg:text-left space-y-6">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-rosepastel-100/80 dark:bg-rosepastel-950/60 text-rosepastel-700 dark:text-rosepastel-300 font-bold text-xs rounded-full border border-rosepastel-200 dark:border-rosepastel-800/50 shadow-sm">
+          ✨ Ramos Eternos & Detalles en Crochet
+        </span>
+        <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 dark:text-white leading-[1.15] tracking-tight">
+          El Arte de Regalar Momentos <span class="text-rosepastel-600 dark:text-rosepastel-300">Eternos</span>
+        </h1>
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
+          Flores hechas con amor en limpiapipas velvet, tiernos amigurumis e hilos finos. Ramos que jamás se marchitan para sorprender a quienes más amas.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+          <a href="#catalogo" class="px-8 py-4 bg-rosepastel-600 hover:bg-rosepastel-700 text-white font-bold rounded-2xl shadow-lg shadow-rosepastel-500/25 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            Explorar Colección 🌷
+          </a>
+          <a href="#personalizar" class="px-8 py-4 glass-card hover:bg-white dark:hover:bg-slate-800 text-slate-800 dark:text-slate-100 font-bold rounded-2xl border border-rosepastel-200 dark:border-slate-700 transition-all flex items-center justify-center gap-2">
+            Diseñar Ramo a Medida 🎨
+          </a>
+        </div>
+      </div>
+      <div class="flex-1 relative">
+        <div class="absolute -inset-4 bg-gradient-to-r from-rosepastel-300 to-amber-200 rounded-3xl blur-2xl opacity-30 dark:opacity-20 animate-pulse"></div>
+        <img src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80" alt="Arreglo Rubielle" class="relative rounded-3xl shadow-2xl object-cover w-full h-[460px] border border-white/60 dark:border-slate-800">
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN CATÁLOGO -->
+  <section id="catalogo" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+      <div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Catálogo Exclusivo</h2>
+        <p class="text-slate-600 dark:text-slate-400">Piezas hechas 100% a mano con dedicación artesanal</p>
+      </div>
+
+      <!-- Buscador -->
+      <div class="relative w-full md:w-80">
+        <input type="text" id="search-input" placeholder="Buscar por flor, tipo, amigurumi..." class="w-full pl-10 pr-4 py-3 rounded-2xl bg-white dark:bg-slate-900 border border-rosepastel-200/80 dark:border-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm transition-all shadow-sm">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400"></i>
+      </div>
+    </div>
+
+    <!-- Filtro Secundario por Ocasión -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar">
+      <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 whitespace-nowrap mr-2">Ocasión:</span>
+      <button data-occasion="Todas" class="occasion-btn px-4 py-1.5 rounded-full text-xs font-bold bg-rosepastel-100 dark:bg-slate-800 text-rosepastel-700 dark:text-rosepastel-300 transition-all whitespace-nowrap">Todas</button>
+      <button data-occasion="Aniversario" class="occasion-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition-all whitespace-nowrap">Aniversario</button>
+      <button data-occasion="Cumpleaños" class="occasion-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition-all whitespace-nowrap">Cumpleaños</button>
+      <button data-occasion="Graduación" class="occasion-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition-all whitespace-nowrap">Graduación</button>
+      <button data-occasion="Sorpresa" class="occasion-btn px-4 py-1.5 rounded-full text-xs font-bold bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 transition-all whitespace-nowrap">Sorpresa</button>
+    </div>
+
+    <!-- Filtros de Categoría Principal -->
+    <div id="category-filters" class="flex flex-wrap gap-2.5 mb-10">
+      <button data-category="Todas" class="filter-btn px-6 py-2.5 rounded-2xl font-bold text-sm bg-rosepastel-600 text-white shadow-md shadow-rosepastel-500/20 transition-all">Todas</button>
+      <button data-category="Limpiapipas" class="filter-btn px-6 py-2.5 rounded-2xl font-bold text-sm bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 transition-all">Limpiapipas</button>
+      <button data-category="Amigurumis" class="filter-btn px-6 py-2.5 rounded-2xl font-bold text-sm bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 transition-all">Amigurumis</button>
+      <button data-category="Crochet" class="filter-btn px-6 py-2.5 rounded-2xl font-bold text-sm bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 transition-all">Crochet</button>
+      <button data-category="Cajas de Regalo" class="filter-btn px-6 py-2.5 rounded-2xl font-bold text-sm bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 transition-all">Cajas de Regalo</button>
+    </div>
+
+    <!-- Grid de Productos -->
+    <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Carga dinámica -->
+    </div>
+  </section>
+
+  <!-- FORMULARIO RAMO PERSONALIZADO -->
+  <section id="personalizar" class="py-20 bg-gradient-to-b from-cream-100/60 to-rosepastel-50/40 dark:from-slate-900/40 dark:to-slate-950 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 glass-card p-8 sm:p-12 rounded-3xl border border-rosepastel-200/60 dark:border-slate-800 shadow-xl">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Atención Personalizada</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1 mb-2">🎨 Cotiza un Ramo a tu Medida</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-sm">Combina colores, cantidad de flores y detalles especiales</p>
+      </div>
+
+      <form id="custom-bouquet-form" class="space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-2">Composición del Ramo</label>
+            <input type="text" id="cust-flowers" required placeholder="Ej. 4 Tulipanes rosa pastel y 2 Girasoles" class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-2">Tono de Envoltura</label>
+            <select id="cust-paper" class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm">
+              <option value="Rosa Pastel Silk">Rosa Pastel Silk</option>
+              <option value="Blanco Crema Marfil">Blanco Crema Marfil</option>
+              <option value="Lila Dulce">Lila Dulce</option>
+              <option value="Negro Mate Elegante">Negro Mate Elegante</option>
+              <option value="Azul Celeste Bebé">Azul Celeste Bebé</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-2">📅 Fecha de Entrega Deseada</label>
+            <input type="date" id="cust-date" required class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-2">📍 Distrito / Ciudad de Entrega</label>
+            <input type="text" id="cust-location" required placeholder="Ej. Miraflores, Lima" class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-2">✍️ Dedicatoria para la Tarjeta</label>
+          <textarea id="cust-note" rows="3" placeholder="Mensaje especial para quien recibe el regalo..." class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-rosepastel-400 outline-none text-sm"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm">
+          <i data-lucide="message-circle" class="w-5 h-5"></i> Cotizar por WhatsApp
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- GENERADOR DE TARJETA DE DEDICATORIA INTERACTIVA -->
+  <section id="tarjeta" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Detalle Especial</span>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">💌 Generador de Tarjetas de Regalo</h2>
+      <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Diseña en tiempo real la nota física en papel perlado que adjuntaremos a tu pedido</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <!-- Formulario de Configuración -->
+      <div class="glass-card p-6 sm:p-8 rounded-3xl border border-rosepastel-200/60 dark:border-slate-800 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Para (Nombre del Destinatario):</label>
+          <input type="text" id="card-to" placeholder="Ej. Camila" class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">De (Tu Nombre o Apodo):</label>
+          <input type="text" id="card-from" placeholder="Ej. Mateo" class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300 mb-1">Mensaje de Amor / Felicitación:</label>
+          <textarea id="card-msg" rows="3" placeholder="Escribe algo hermoso que tocará su corazón..." class="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm outline-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Vista Previa En Vivo de la Tarjeta -->
+      <div class="flex justify-center">
+        <div id="card-preview" class="w-full max-w-sm aspect-[4/3] bg-gradient-to-br from-rosepastel-50 via-white to-rosepastel-100 dark:from-slate-800 dark:via-slate-900 dark:to-slate-800 border-2 border-rosepastel-300/80 dark:border-rosepastel-700 rounded-3xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
+          <div class="text-right text-rosepastel-300 dark:text-rosepastel-600 text-2xl font-bold">🌸 Rubielle</div>
+          <div class="space-y-2">
+            <p class="text-xs font-semibold text-rosepastel-600 dark:text-rosepastel-300">Para: <span id="preview-to" class="font-bold text-slate-800 dark:text-slate-100">Camila</span></p>
+            <p id="preview-msg" class="text-xs text-slate-600 dark:text-slate-300 italic leading-relaxed">"Que este ramo ilumine tus días tanto como tu sonrisa ilumina los míos."</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs font-semibold text-rosepastel-600 dark:text-rosepastel-300">Con cariño: <span id="preview-from" class="font-bold text-slate-800 dark:text-slate-100">Mateo</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEÑAS Y TESTIMONIOS -->
+  <section id="testimonios" class="py-20 bg-rosepastel-50/50 dark:bg-slate-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Experiencias Reales</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Lo que dicen nuestros clientes</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-3xl border border-rosepastel-200/50 dark:border-slate-800 space-y-3">
+          <div class="flex text-amber-400 text-xs">⭐⭐⭐⭐⭐</div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">"El ramo de tulipanes en limpiapipas superó todas mis expectativas. Llegó perfectamente empacado y a mi novia le encantó saber que durará para siempre."</p>
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-8 h-8 rounded-full bg-rosepastel-200 flex items-center justify-center font-bold text-xs text-rosepastel-700">S</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">Sofia M.</h4>
+              <span class="text-[10px] text-slate-400">Compró Ramo Tulipanes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl border border-rosepastel-200/50 dark:border-slate-800 space-y-3">
+          <div class="flex text-amber-400 text-xs">⭐⭐⭐⭐⭐</div>
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed italic">"Pedí la cúpula de la abejita para el cumpleaños de mi hermana. Los acabados del tejido en crochet son delicadísimos. 10/10 en atención."</p>
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-8 h-8 rounded-full bg-amber-200 flex items-center justify-center font-bold text-xs text-amber-700">D</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">Daniela R.</h4>
+              <span class="text-[10px] text-slate-400">Compró Abejita Cúpula</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl border border-rosepastel-200/50 dark:border-slate-800 space-y-3">
+          <div class="flex text-amber-400 text-xs">⭐⭐⭐⭐⭐</div>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed italic">"La caja Snoopy con luces LED dejó sin palabras a mi prometida. La atención personalizada por WhatsApp fue facilísima y súper rápida."</p>
+          <div class="flex items-center gap-3 pt-2">
+            <div class="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center font-bold text-xs text-emerald-700">C</div>
+            <div>
+              <h4 class="text-xs font-bold text-slate-800 dark:text-slate-200">Carlos V.</h4>
+              <span class="text-[10px] text-slate-400">Compró Box Snoopy</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Mapa Interactivo / Taller -->
+<section id="ubicacion" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+    <div class="glass-card relative z-10 p-6 sm:p-8 rounded-3xl border border-rosepastel-200/60 dark:border-slate-800 space-y-4">
+      <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Envíos & Recojo</span>
+      <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Nuestro Taller Creativo</h3>
+      <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+        Atendemos bajo pedido previo. Puedes coordinar recojo en nuestro taller o solicitar envío directo a domicilio en toda la ciudad.
+      </p>
+
+      <!-- Contenedor del Mapa con interacción directa -->
+      <div class="relative z-20 w-full h-56 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.7101487897094!2d-77.00333242315384!3d-12.063453088174642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c622ec201efd%3A0xd1b5acb140092c8b!2sAv.%20Nicol%C3%A1s%20Ayll%C3%B3n%20872%2C%20Lima%2015019!5e0!3m2!1ses!2spe!4v1790744677265!5m2!1ses!2spe" 
+        class="w-full h-full border-0 pointer-events-auto" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"
+        aria-label="Ubicación del Taller Rubielle en Google Maps">
+      </iframe>
+    </div>
+  </div>
+
+      <!-- Métodos de Pago Aceptados -->
+      <div class="glass-card p-6 sm:p-8 rounded-3xl border border-rosepastel-200/60 dark:border-slate-800 space-y-6">
+        <div>
+          <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Pagos Seguros</span>
+          <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">Medios de Pago Aceptados</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+            <span class="text-2xl">📱</span>
+            <div>
+              <h4 class="text-xs font-bold">Yape / Plin</h4>
+              <p class="text-[10px] text-slate-400">Transferencia instantánea</p>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+            <span class="text-2xl">💳</span>
+            <div>
+              <h4 class="text-xs font-bold">Tarjetas</h4>
+              <p class="text-[10px] text-slate-400">Débito y Crédito</p>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+            <span class="text-2xl">🏦</span>
+            <div>
+              <h4 class="text-xs font-bold">Banca Móvil</h4>
+              <p class="text-[10px] text-slate-400">BCP, BBVA, Interbank</p>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center gap-3">
+            <span class="text-2xl">💵</span>
+            <div>
+              <h4 class="text-xs font-bold">Efectivo</h4>
+              <p class="text-[10px] text-slate-400">Contraentrega/Recojo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES -->
+  <section class="py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10">
+      <span class="text-xs font-bold text-rosepastel-700 dark:text-rosepastel-300 uppercase tracking-widest">Resolvemos tus dudas</span>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Preguntas Frecuentes</h2>
+    </div>
+
+    <div class="space-y-4">
+      <details class="group glass-card rounded-2xl p-4 border border-rosepastel-200/60 dark:border-slate-800 transition-all [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 cursor-pointer text-sm">
+          <span>¿Con cuánto tiempo de anticipación debo hacer mi pedido?</span>
+          <span class="transition group-open:-rotate-180 text-rosepastel-600">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </span>
+        </summary>
+        <p class="mt-3 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          Recomendamos realizar los pedidos con al menos 3 a 5 días de anticipación, ya que cada pieza se elabora 100% a mano con especial dedicación. Para fechas especiales (San Valentín, Día de la Madre), sugerimos agendar con 1 semana de antelación.
+        </p>
+      </details>
+
+      <details class="group glass-card rounded-2xl p-4 border border-rosepastel-200/60 dark:border-slate-800 transition-all [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 cursor-pointer text-sm">
+          <span>¿Cómo cuido mis flores de limpiapipas o crochet?</span>
+          <span class="transition group-open:-rotate-180 text-rosepastel-600">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </span>
+        </summary>
+        <p class="mt-3 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          Nuestras flores no requieren agua ni luz solar. Solo manténlas en un espacio libre de humedad y retira el polvo suavemente con un plumero o aire frío a baja potencia. ¡Durarán hermosas por años!
+        </p>
+      </details>
+
+      <details class="group glass-card rounded-2xl p-4 border border-rosepastel-200/60 dark:border-slate-800 transition-all [&_summary::-webkit-details-marker]:hidden">
+        <summary class="flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 cursor-pointer text-sm">
+          <span>¿Realizan envíos a domicilio?</span>
+          <span class="transition group-open:-rotate-180 text-rosepastel-600">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </span>
+        </summary>
+        <p class="mt-3 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+          ¡Sí! Coordinamos envíos seguros con empaque protector antichoque a todo el distrito y agencias nacionales. El costo de envío se calcula según la ubicación exacta al momento de confirmar por WhatsApp.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <!-- SOBRE NOSOTROS -->
+  <section id="nosotros" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+    <span class="p-2 bg-rosepastel-100 dark:bg-slate-800 rounded-full inline-block">🌸</span>
+    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Conoce la magia de Rubielle</h2>
+    <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto text-base leading-relaxed">
+      Creamos cada flor, amigurumi y detalle a mano con la máxima calidad. Queremos que regales más que un detalle: un recuerdo que perdure para siempre en el corazón de quien lo recibe.
+    </p>
+  </section>
+
+  <!-- MODAL QUICK VIEW (VISTA RÁPIDA DE PRODUCTO) -->
+  <div id="quickview-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border border-rosepastel-200/50 dark:border-slate-800">
+      <button id="close-quickview-btn" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white text-2xl font-bold">&times;</button>
+      <div id="quickview-content" class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+        <!-- Renderizado de QuickView -->
+      </div>
+    </div>
+  </div>
+
+<!-- MODAL CARRITO -->
+<div id="cart-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex justify-end">
+  <div class="bg-white dark:bg-slate-900 w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l border-slate-200 dark:border-slate-800 overflow-y-auto">
+    
+    <!-- HEADER -->
+    <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        Tu Carrito 🛒
+      </h3>
+      <button id="close-cart-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl font-bold">&times;</button>
+    </div>
+
+    <!-- CUERPO PRINCIPAL -->
+    <div class="flex-1 my-4 space-y-4 overflow-y-auto pr-1">
+      
+      <!-- ITEMS DEL CARRITO -->
+      <div id="cart-items" class="space-y-2">
+        <!-- Carga dinámicamente desde main.js -->
+      </div>
+
+      <!-- DETALLES DE ENTREGA -->
+      <div class="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+        <h4 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+          📍 Datos de Envío / Recojo
+        </h4>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+            Fecha de Entrega / Recojo
+          </label>
+          <input type="date" id="cart-delivery-date" class="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-rosepastel-500">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+            Método de Entrega / Distrito
+          </label>
+          <select id="cart-delivery-district" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-rosepastel-500">
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">
+            Dirección Exacta / Referencia
+          </label>
+          <input type="text" id="cart-delivery-address" class="w-full text-xs px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-rosepastel-500" placeholder="Ej: Ca. Las Flores 123, Dpto 201 (O 'Recojo en taller')">
+        </div>
+      </div>
+
+      <!-- SECCIÓN MÉTODOS DE PAGO (PASO 3) -->
+      <div class="pt-3 border-t border-slate-100 dark:border-slate-800">
+        <details class="group bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <summary class="flex items-center justify-between p-3.5 text-xs font-bold text-slate-800 dark:text-slate-200 cursor-pointer select-none">
+            <span class="flex items-center gap-2">
+              💳 Métodos de Pago Disponibles
+            </span>
+            <span class="transition-transform duration-300 group-open:rotate-180 text-slate-400">▼</span>
+          </summary>
+          
+          <div class="p-3.5 pt-0 space-y-3 text-xs text-slate-600 dark:text-slate-300 border-t border-slate-200/60 dark:border-slate-700/60 mt-1">
+            
+            <!-- Yape / Plin -->
+            <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-purple-600 dark:text-purple-400">📱 Yape / Plin</span>
+                <button onclick="window.copyToClipboard('939183704', 'Número copiado')" class="text-[10px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 px-2 py-1 rounded-md font-bold text-slate-700 dark:text-slate-300">
+                  📋 Copiar
+                </button>
+              </div>
+              <p class="text-[11px] font-mono mt-1 font-bold text-slate-800 dark:text-slate-200">939 183 704</p>
+              <p class="text-[10px] text-slate-400">Titular: Rubielle Flores</p>
+            </div>
+
+            <!-- Transferencia BCP -->
+            <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/80">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-sky-600 dark:text-sky-400">🏦 Transferencia BCP</span>
+                <button onclick="window.copyToClipboard('1910000000000', 'Cuenta BCP copiada')" class="text-[10px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 px-2 py-1 rounded-md font-bold text-slate-700 dark:text-slate-300">
+                  📋 Copiar
+                </button>
+              </div>
+              <p class="text-[11px] font-mono mt-1 font-bold text-slate-800 dark:text-slate-200">191-XXXXXXX-X-XX</p>
+              <p class="text-[10px] text-slate-400">CCI: 002191XXXXXXXXXXXXXXXXXX</p>
+            </div>
+
+            <p class="text-[10px] text-slate-400 italic text-center">
+              * El pago se confirma enviando la captura por WhatsApp al finalizar el pedido.
+            </p>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <!-- FOOTER / TOTAL Y CHECKOUT -->
+    <div class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+      <div class="flex justify-between items-center">
+        <span class="text-sm font-bold text-slate-700 dark:text-slate-300">Total a Pagar:</span>
+        <span id="cart-total" class="text-rosepastel-600 dark:text-rosepastel-300 text-2xl font-extrabold">S/ 0.00</span>
+      </div>
+
+      <button id="checkout-whatsapp-btn" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+        <i data-lucide="send" class="w-4 h-4"></i> Finalizar Pedido por WhatsApp
+      </button>
+    </div>
+
+  </div>
+</div>
+
+  <!-- MODAL DE FAVORITOS (WISHLIST) -->
+  <div id="wishlist-modal" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm hidden flex justify-end">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md h-full p-6 flex flex-col justify-between shadow-2xl border-l border-slate-200 dark:border-slate-800">
+      <div>
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            Mis Favoritos ❤️
+          </h3>
+          <button id="close-wishlist-btn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-2xl font-bold">&times;</button>
+        </div>
+        <div id="wishlist-items" class="py-4 space-y-4 max-h-[70vh] overflow-y-auto">
+          <!-- Renderizado dinámico de wishlist -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script interactivo en vivo para el Generador de Tarjeta -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const inputTo = document.getElementById('card-to');
+      const inputFrom = document.getElementById('card-from');
+      const inputMsg = document.getElementById('card-msg');
+
+      const previewTo = document.getElementById('preview-to');
+      const previewFrom = document.getElementById('preview-from');
+      const previewMsg = document.getElementById('preview-msg');
+
+      inputTo?.addEventListener('input', (e) => {
+        previewTo.textContent = e.target.value || 'Camila';
+      });
+
+      inputFrom?.addEventListener('input', (e) => {
+        previewFrom.textContent = e.target.value || 'Mateo';
+      });
+
+      inputMsg?.addEventListener('input', (e) => {
+        previewMsg.textContent = e.target.value ? `"${e.target.value}"` : '"Que este ramo ilumine tus días tanto como tu sonrisa ilumina los míos."';
+      });
+    });
+  </script>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
